@@ -111,7 +111,8 @@ code {
 }
 
 
-.dashboard {
+.dashboard,
+.workout {
   width: 100%;
   max-width: 700px;
   padding: 32px 24px;
@@ -121,7 +122,8 @@ code {
 }
 
 
-.dashboard > div {
+.dashboard > div,
+.exercise {
   background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -130,7 +132,8 @@ code {
 }
 
 
-.dashboard input {
+.dashboard input,
+.woekout input {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -143,7 +146,8 @@ code {
 }
 
 
-.dashboard button {
+.dashboard button,
+.workout button {
   font: inherit;
   padding: 10px 14px;
   border: 1px solid var(--accent-border);
@@ -156,14 +160,16 @@ code {
 }
 
 
-.dashboard button:hover:not(:disabled) {
+.dashboard button:hover:not(:disabled),
+.workout button:hover:not(:disabled) {
   background: var(--accent);
   color: white;
   border-color: var(--accent);
 }
 
 
-.dashboard button:disabled {
+.dashboard button:disabled,
+.workout button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -189,14 +195,16 @@ code {
 }
 
 
-.dashboard button.delete-button {
+.dashboard button.delete-button,
+.workout button.delete-button {
   color: #f87171;
   background: rgba(239, 68, 68, 0.1);
   border-color: rgba(239, 68, 68, 0.4);
 }
 
 
-.dashboard button.delete-button:hover {
+.dashboard button.delete-button:hover,
+.woekout button.delete-button:hover {
   background: #ef4444;
   border-color: #ef4444;
   color: white;
@@ -245,4 +253,22 @@ code {
   .form-row button {
     width: 100%;
   }
+}
+
+
+.set-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.set-row input {
+  width: 100%;
+  margin: 0;
+}
+
+.set-row button {
+  margin: 0;
 }
