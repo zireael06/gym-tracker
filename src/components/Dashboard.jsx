@@ -10,6 +10,7 @@ function Dashboard() {
   const [newRoutineName, setNewRoutineName] = useState("");
   const [editedRoutineName, setEditedRoutineName] = useState("");
   const [newRoutineExercise, setNewRoutineExercise] = useState("");
+  const [workoutSearch, setWorkoutSearch] = useState("");
 
   const [completedWorkouts, setCompletedWorkouts] = useState(() => {
     const savedWorkouts = localStorage.getItem("completedWorkouts");
@@ -94,6 +95,12 @@ function Dashboard() {
 
   const selectedRoutine = routines.find((routine) => {
     return routine.id === selectedRoutineId;
+  });
+
+  const filteredWorkouts = completedWorkouts.filter((workout) => {
+    return workout.name
+    .toLowerCase()
+    .includes(workoutSearch.toLocaleLowerCase());
   });
 
   useEffect(() => {
@@ -409,10 +416,19 @@ function Dashboard() {
         <div>
           <h3>Recent Workouts</h3>
 
+          <input
+           type="text"
+           value={workoutSearch}
+           placeholder="Search Workout"
+           onChange={(event) => setWorkoutSearch(event.target.value)}
+           />
+
           {completedWorkouts.length === 0 ? (
             <p>No workouts completed yet.</p>
+          ) : filteredWorkouts.length === 0 ? (
+            <p>No matching workouts found.</p>
           ) : (
-            completedWorkouts.map((workout) => {
+            filteredWorkouts.map((workout) => {
               const totalSets = workout.exercises.reduce(
                 (total, exercise) => {
                   return total + exercise.sets.length;
