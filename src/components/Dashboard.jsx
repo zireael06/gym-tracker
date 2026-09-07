@@ -143,6 +143,18 @@ function Dashboard() {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
+  function calculateExerciseVolume(exercise) {
+    return exercise.sets.reduce((total, set) => {
+      return total + set.weight * set.reps;
+    }, 0);
+  }
+  
+  function calculateWorkoutVolume(workout) {
+    return workout.exercises.reduce((total, exercise) => {
+      return total + calculateExerciseVolume(exercise);
+    }, 0);
+  }
+
   function removeCompletedWorkout(id) {
     const updatedCompletedWorkouts = completedWorkouts.filter(
       (workout) => {
@@ -436,6 +448,8 @@ function Dashboard() {
                 0
               );
 
+              const totalVolume = calculateWorkoutVolume(workout);
+
               return (
                 <div key={workout.id}>
                   <h4>{workout.name}</h4>
@@ -450,6 +464,8 @@ function Dashboard() {
                   </p>
 
                   <p>Sets: {totalSets}</p>
+
+                  <p>Total volume: {totalVolume.toLocaleString()}kg</p>
 
                   <p>
                     {new Date(workout.date).toLocaleString()}
