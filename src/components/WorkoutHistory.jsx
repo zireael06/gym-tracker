@@ -42,6 +42,7 @@ function WorkoutHistory({
       {selectedWorkout.exercises.map((exercise) => (
         <div key={exercise.id}>
           <h4>{exercise.name}</h4>
+          <p>Volume: {calculateExerciseVolume(exercise)}kg</p>
 
           {exercise.sets.map((set, index) => (
             <div key={set.id}>
