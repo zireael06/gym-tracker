@@ -1,16 +1,12 @@
 import Workout from "./Workout";
 import WorkoutHistory from "./WorkoutHistory";
+import RoutineManager from "./RoutineManager";
 import { useEffect, useState } from "react";
 
 function Dashboard() {
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState(null);
   const [selectedRoutineId, setSelectedRoutineId] = useState(null);
-
-  const [newRoutineName, setNewRoutineName] = useState("");
-  const [editedRoutineName, setEditedRoutineName] = useState("");
-  const [newRoutineExercise, setNewRoutineExercise] = useState("");
-  
 
   const [completedWorkouts, setCompletedWorkouts] = useState(() => {
     const savedWorkouts = localStorage.getItem("completedWorkouts");
@@ -137,8 +133,8 @@ function Dashboard() {
     setCompletedWorkouts(updatedCompletedWorkouts);
   }
 
-  function addNewRoutineName() {
-    if (!newRoutineName.trim()) {
+  function addNewRoutineName(routineName) {
+    if (!routineName) {
       return;
     }
 
@@ -146,16 +142,14 @@ function Dashboard() {
       ...routines,
       {
         id: crypto.randomUUID(),
-        name: newRoutineName.trim(),
+        name: routineName.trim(),
         exercises: [],
       },
     ]);
-
-    setNewRoutineName("");
   }
 
-  function renameRoutine() {
-    if (!selectedRoutine || !editedRoutineName.trim()) {
+  function renameRoutine(routineName) {
+    if (!selectedRoutine || !routineName) {
       return;
     }
 
@@ -163,7 +157,7 @@ function Dashboard() {
       if (routine.id === selectedRoutine.id) {
         return {
           ...routine,
-          name: editedRoutineName.trim(),
+          name: routineName,
         };
       }
 
@@ -171,11 +165,10 @@ function Dashboard() {
     });
 
     setRoutines(updatedRoutines);
-    setEditedRoutineName("");
   }
 
-  function addExerciseToRoutine() {
-    if (!selectedRoutine || !newRoutineExercise.trim()) {
+  function addExerciseToRoutine(exerciseName) {
+    if (!selectedRoutine || !exerciseName) {
       return;
     }
 
@@ -187,7 +180,7 @@ function Dashboard() {
             ...routine.exercises,
             {
               id: crypto.randomUUID(),
-              name: newRoutineExercise.trim(),
+              name: exerciseName,
             },
           ],
         };
@@ -197,7 +190,6 @@ function Dashboard() {
     });
 
     setRoutines(updatedRoutines);
-    setNewRoutineExercise("");
   }
 
   function removeExerciseFromRoutine(exerciseId) {
@@ -245,122 +237,16 @@ function Dashboard() {
     <div className="dashboard">
       <h2>Dashboard</h2>
 
-      <div className="form-row">
-        <input
-          type="text"
-          value={newRoutineName}
-          placeholder="Routine name"
-          onChange={(event) =>
-            setNewRoutineName(event.target.value)
-          }
-        />
-
-        <button
-          type="button"
-          onClick={addNewRoutineName}
-        >
-          Add Routine
-        </button>
-      </div>
-
-      <div className="routine-list">
-        <h3>Routines</h3>
-
-        {routines.map((routine) => (
-          <div className="routine-row" key={routine.id}>
-            <button
-              className={
-                routine.id === selectedRoutineId
-                  ? "routine-button selected"
-                  : "routine-button"
-              }
-              type="button"
-              onClick={() =>
-                setSelectedRoutineId(routine.id)
-              }
-            >
-              {routine.name}
-            </button>
-
-            <button
-              className="delete-button"
-              type="button"
-              onClick={() => deleteRoutine(routine.id)}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <p>
-        Selected routine:{" "}
-        {selectedRoutine ? selectedRoutine.name : "None"}
-      </p>
-
-      {selectedRoutine && (
-        <div>
-          <h3>Edit {selectedRoutine.name}</h3>
-
-          <div className="form-row">
-            <input
-              type="text"
-              value={editedRoutineName}
-              placeholder="New routine name"
-              onChange={(event) =>
-                setEditedRoutineName(event.target.value)
-              }
-            />
-
-            <button
-              type="button"
-              onClick={renameRoutine}
-            >
-              Rename Routine
-            </button>
-          </div>
-
-          <div className="form-row">
-            <input
-              type="text"
-              value={newRoutineExercise}
-              placeholder="Exercise name"
-              onChange={(event) =>
-                setNewRoutineExercise(event.target.value)
-              }
-            />
-
-            <button
-              type="button"
-              onClick={addExerciseToRoutine}
-            >
-              Add Exercise
-            </button>
-          </div>
-
-          <h3>Exercises</h3>
-
-          {selectedRoutine.exercises.length === 0 ? (
-            <p>No exercises added yet.</p>
-          ) : (
-            selectedRoutine.exercises.map((exercise) => (
-              <div className="exercise-row" key={exercise.id}>
-                <span>{exercise.name}</span>
-
-                <button
-                  className="delete-button"
-                  type="button"
-                  onClick={() =>
-                    removeExerciseFromRoutine(exercise.id)
-                  }
-                >
-                  Remove
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-      )}
+      <RoutineManager
+        routines={routines}
+        selectedRoutine={selectedRoutine}
+        onSelectRoutine={setSelectedRoutineId}
+        onAddRoutine={addNewRoutineName}
+        onRenameRoutine={renameRoutine}
+        onAddExercise={addExerciseToRoutine}
+        onRemoveExercise={removeExerciseFromRoutine}
+        onDeleteRoutine={deleteRoutine}
+      />
 
       <button
         type="button"
