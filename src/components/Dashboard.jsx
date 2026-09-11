@@ -115,7 +115,7 @@ function Dashboard() {
   }
 
   function startWorkout() {
-    if (!selectedRoutine) {
+    if (!selectedRoutine || selectedRoutine.exercises.length === 0) {
       return;
     }
 
@@ -251,10 +251,14 @@ function Dashboard() {
       <button
         type="button"
         onClick={startWorkout}
-        disabled={!selectedRoutine}
+        disabled={!selectedRoutine || selectedRoutine.exercises.length === 0}
       >
         Start Workout
       </button>
+
+      {selectedRoutine && selectedRoutine.exercises.length === 0 && (
+        <p>Add an exercise to this routine before starting.</p>
+      )}
 
       <WorkoutHistory
         completedWorkouts={completedWorkouts}
