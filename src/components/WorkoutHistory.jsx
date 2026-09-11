@@ -38,6 +38,7 @@ function WorkoutHistory({
   return selectedWorkout ? (
     <div>
       <h3>{selectedWorkout.name}</h3>
+      <p>Total volume: {calculateWorkoutVolume(selectedWorkout)}kg</p>
 
       {selectedWorkout.exercises.map((exercise) => (
         <div key={exercise.id}>
