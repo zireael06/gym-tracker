@@ -56,6 +56,7 @@ function RoutineManager({
             <button
                 type="button"
                 onClick={handleAddRoutine}
+                disabled={!newRoutineName.trim()}
             >
                 Add Routine
             </button>
@@ -109,6 +110,7 @@ function RoutineManager({
                     <button
                         type="button"
                         onClick={handleRenameRoutine}
+                        disabled={!editedRoutineName.trim()}
                     >
                         Rename Routine
                     </button>
@@ -127,6 +129,7 @@ function RoutineManager({
                     <button
                         type="button"
                         onClick={handleAddExercise}
+                        disabled={!newRoutineExercise.trim()}
                     >
                         Add Exercise
                     </button>
