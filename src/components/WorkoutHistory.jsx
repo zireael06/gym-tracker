@@ -74,6 +74,13 @@ function WorkoutHistory({
           setWorkoutSearch(event.target.value)
         }
       />
+      <button
+      type="button"
+      onClick={() => setWorkoutSearch("")}
+      disabled={!workoutSearch}
+      >
+        Clear Search
+      </button>
 
       {completedWorkouts.length === 0 ? (
         <p>No workouts completed yet.</p>
