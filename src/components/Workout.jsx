@@ -139,7 +139,17 @@ function Workout({
     setExercises(updatedExercises);
   }
 
+  const hasInvalidSets = exercises.some((exercise) =>
+    exercise.sets.some((set) => {
+      return set.weight < 0 || set.weight === "" || set.reps < 1 || set.reps === "" || !Number.isInteger(set.reps);
+    })
+  );
+
+
   function finishWorkout() {
+    if (hasInvalidSets) {
+      return;
+    }
     const completedWorkout = {
       id: crypto.randomUUID(),
       name,
@@ -206,9 +216,15 @@ function Workout({
         
       </div>
 
-      <button type="button" onClick={finishWorkout}>
+      <button type="button" onClick={finishWorkout} disabled={hasInvalidSets}>
         Finish Workout
       </button>
+      {hasInvalidSets && (
+        <p>
+          Enter a weight of 0 or more and whole-number reps of at least 1 for every set.
+        </p>
+      )}
+      
     </div>
   );
 }

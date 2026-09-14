@@ -89,6 +89,8 @@ function Exercise({
 
             <input
               type="number"
+              min={"0"}
+              step={"0.5"}
               value={set.weight}
               onChange={(event) =>
                 onUpdateWeight(
@@ -107,6 +109,8 @@ function Exercise({
 
             <input
               type="number"
+              min={"1"}
+              step={"1"}
               value={set.reps}
               onChange={(event) =>
                 onUpdateReps(
