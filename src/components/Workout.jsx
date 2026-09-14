@@ -190,6 +190,7 @@ function Workout({
       })}
 
       <div className="form-row">
+
         <input
           type="text"
           value={newExerciseName}
@@ -199,9 +200,10 @@ function Workout({
           }
         />
 
-        <button type="button" onClick={addExercise}>
+        <button type="button" onClick={addExercise} disabled={!newExerciseName.trim()}>
           Add Exercise
         </button>
+        
       </div>
 
       <button type="button" onClick={finishWorkout}>
