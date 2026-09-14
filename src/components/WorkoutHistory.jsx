@@ -82,6 +82,8 @@ function WorkoutHistory({
         Clear Search
       </button>
 
+      <p>Showing {filteredWorkouts.length} of {completedWorkouts.length} workouts</p>
+
       {completedWorkouts.length === 0 ? (
         <p>No workouts completed yet.</p>
       ) : filteredWorkouts.length === 0 ? (
