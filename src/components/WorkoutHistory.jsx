@@ -10,7 +10,7 @@ function WorkoutHistory({
   const filteredWorkouts = completedWorkouts.filter((workout) => {
     return workout.name
       .toLowerCase()
-      .includes(workoutSearch.toLowerCase());
+      .includes(workoutSearch.toLowerCase().trim());
   });
 
   function formatDuration(duration) {
