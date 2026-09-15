@@ -92,6 +92,7 @@ function Exercise({
               min={"0"}
               step={"0.5"}
               value={set.weight}
+              aria-invalid={set.weight === "" || set.weight < 0}
               onChange={(event) =>
                 onUpdateWeight(
                   id,
@@ -112,6 +113,7 @@ function Exercise({
               min={"1"}
               step={"1"}
               value={set.reps}
+              aria-invalid={set.reps === "" || set.reps < 1 || !Number.isInteger(set.reps)}
               onChange={(event) =>
                 onUpdateReps(
                   id,

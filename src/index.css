@@ -272,3 +272,8 @@ code {
 .set-row button {
   margin: 0;
 }
+
+.workout .set-row input[aria-invalid="true"] {
+  border-color: #ef4444;
+  outline: 1px solid #ef4444;
+}
