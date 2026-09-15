@@ -106,7 +106,13 @@ function RoutineManager({
             <div>
                 <h3>Edit {selectedRoutine.name}</h3>
 
-                <div className="form-row">
+                <form 
+                    className="form-row"
+                    onSubmit={(event) => {
+                        event.preventDefault();
+                        handleRenameRoutine();
+                    }}
+                    >
 
                     <label htmlFor="rename-routine">New routine name</label>
 
@@ -121,15 +127,21 @@ function RoutineManager({
                     />
 
                     <button
-                        type="button"
-                        onClick={handleRenameRoutine}
+                        type="submit"
                         disabled={!editedRoutineName.trim()}
                     >
                         Rename Routine
                     </button>
-                </div>
+                </form>
 
-                <div className="form-row">
+
+                <form 
+                    className="form-row"
+                    onSubmit={(event) => {
+                        event.preventDefault();
+                        handleAddExercise();
+                    }}
+                    >
 
                     <label htmlFor="routine-exercise-name">Exercise name</label>
 
@@ -144,13 +156,12 @@ function RoutineManager({
                     />
 
                     <button
-                        type="button"
-                        onClick={handleAddExercise}
+                        type="submit"
                         disabled={!newRoutineExercise.trim()}
                     >
                         Add Exercise
                     </button>
-                </div>
+                </form>
 
                 <h3>Exercises</h3>
 
