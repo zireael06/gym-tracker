@@ -123,6 +123,7 @@ code {
 
 
 .dashboard > div,
+.dashboard > form,
 .exercise {
   background: var(--code-bg);
   border: 1px solid var(--border);
@@ -133,7 +134,7 @@ code {
 
 
 .dashboard input,
-.woekout input {
+.workout input {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
@@ -204,7 +205,7 @@ code {
 
 
 .dashboard button.delete-button:hover,
-.woekout button.delete-button:hover {
+.workout button.delete-button:hover {
   background: #ef4444;
   border-color: #ef4444;
   color: white;

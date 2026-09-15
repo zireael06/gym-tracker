@@ -43,7 +43,13 @@ function RoutineManager({
   
   return (
     <>
-        <div className="form-row">
+        <form 
+            className="form-row"
+            onSubmit={(event) => {
+                event.preventDefault();
+                handleAddRoutine();
+            }}
+            >
 
             <label htmlFor="Name-routine">Routine name</label>
 
@@ -58,13 +64,12 @@ function RoutineManager({
             />
             
             <button
-                type="button"
-                onClick={handleAddRoutine}
+                type="submit"
                 disabled={!newRoutineName.trim()}
             >
                 Add Routine
             </button>
-        </div>
+        </form>
 
         <div className="routine-list">
             <h3>Routines</h3>

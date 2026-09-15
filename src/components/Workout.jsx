@@ -172,6 +172,7 @@ function Workout({
   const formattedSeconds = String(seconds).padStart(2, "0");
 
   return (
+
     <div className="workout">
       <h2>Current Workout</h2>
       <h3>{name}</h3>
@@ -203,7 +204,13 @@ function Workout({
         );
       })}
 
-      <div className="form-row">
+      <form
+        className="form-row"
+        onSubmit={(event) => {
+          event.preventDefault();
+          addExercise();
+        }}
+      >
 
         <label htmlFor="workout-exercise-name">Exercise name</label>
 
@@ -217,11 +224,11 @@ function Workout({
           }
         />
 
-        <button type="button" onClick={addExercise} disabled={!newExerciseName.trim()}>
+        <button type="submit" disabled={!newExerciseName.trim()}>
           Add Exercise
         </button>
         
-      </div>
+      </form>
 
       <button type="button" onClick={finishWorkout} disabled={hasInvalidSets || ! hasSets}>
         Finish Workout
