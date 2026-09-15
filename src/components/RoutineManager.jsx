@@ -44,8 +44,12 @@ function RoutineManager({
   return (
     <>
         <div className="form-row">
+
+            <label htmlFor="Name-routine">Routine name</label>
+
             <input
                 type="text"
+                id="Name-routine"
                 value={newRoutineName}
                 placeholder="Routine name"
                 onChange={(event) =>
@@ -98,8 +102,12 @@ function RoutineManager({
                 <h3>Edit {selectedRoutine.name}</h3>
 
                 <div className="form-row">
+
+                    <label htmlFor="rename-routine">New routine name</label>
+
                     <input
                         type="text"
+                        id="rename-routine"
                         value={editedRoutineName}
                         placeholder="New routine name"
                         onChange={(event) =>
@@ -117,8 +125,12 @@ function RoutineManager({
                 </div>
 
                 <div className="form-row">
+
+                    <label htmlFor="routine-exercise-name">Exercise name</label>
+
                     <input
                         type="text"
+                        id="routine-exercise-name"
                         value={newRoutineExercise}
                         placeholder="Exercise name"
                         onChange={(event) =>

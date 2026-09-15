@@ -66,8 +66,11 @@ function WorkoutHistory({
     <div>
       <h3>Recent Workouts</h3>
 
+      <label htmlFor="workout-search">Search workouts</label>
+
       <input
         type="text"
+        id="workout-search"
         value={workoutSearch}
         placeholder="Search Workout"
         onChange={(event) =>
