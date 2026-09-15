@@ -205,8 +205,11 @@ function Workout({
 
       <div className="form-row">
 
+        <label htmlFor="workout-exercise-name">Exercise name</label>
+
         <input
           type="text"
+          id="workout-exercise-name"
           value={newExerciseName}
           placeholder="Exercise name"
           onChange={(event) =>
