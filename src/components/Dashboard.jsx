@@ -123,13 +123,14 @@ function Dashboard() {
   }
 
   function startWorkout() {
-    if (!selectedRoutine || selectedRoutine.exercises.length === 0) {
+    if (savedWorkout || !selectedRoutine || selectedRoutine.exercises.length === 0) {
       return;
     }
     setSavedWorkout(null);
     setWorkoutStartTime(Date.now());
     setWorkoutStarted(true);
   }
+
 
   function resumeWorkout() {
     if (!savedWorkout) {
@@ -138,6 +139,20 @@ function Dashboard() {
     setWorkoutStartTime(savedWorkout.startTime)
     setWorkoutStarted(true)
     }
+
+  function discardWorkout() {
+    const confirmed = window.confirm(
+      "Discard this unfinished workout? Its sets will be lost."
+    );
+    
+    if (!confirmed) {
+      return;
+    }
+
+    localStorage.removeItem("activeWorkout")
+    setSavedWorkout(null);
+  }
+  
 
   function removeCompletedWorkout(id) {
     const updatedCompletedWorkouts = completedWorkouts.filter(
@@ -263,6 +278,13 @@ function Dashboard() {
            >
             Resume Workout
           </button>
+          <button
+           type="button"
+           className="delete-button"
+           onClick={discardWorkout}
+           >
+            Discard Workout
+          </button>
         </div>
       )}
 
@@ -282,7 +304,7 @@ function Dashboard() {
       <button
         type="button"
         onClick={startWorkout}
-        disabled={!selectedRoutine || selectedRoutine.exercises.length === 0}
+        disabled={savedWorkout || !selectedRoutine || selectedRoutine.exercises.length === 0}
       >
         Start Workout
       </button>
