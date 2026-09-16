@@ -7,6 +7,12 @@ function Dashboard() {
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState(null);
   const [selectedRoutineId, setSelectedRoutineId] = useState(null);
+  
+  const [savedWorkout, setSavedWorkout] = useState(() => {
+    const saved = localStorage.getItem("activeWorkout");
+    return saved ? JSON.parse(saved) : null;
+  });
+
 
   const [completedWorkouts, setCompletedWorkouts] = useState(() => {
     const savedWorkouts = localStorage.getItem("completedWorkouts");
@@ -14,8 +20,10 @@ function Dashboard() {
     return savedWorkouts ? JSON.parse(savedWorkouts) : [];
   });
 
+
   const [routines, setRoutines] = useState(() => {
     const savedRoutines = localStorage.getItem("routines");
+
 
     return savedRoutines
       ? JSON.parse(savedRoutines)
@@ -109,7 +117,7 @@ function Dashboard() {
       ...completedWorkouts,
       completedWorkout,
     ]);
-
+    setSavedWorkout(null);
     setWorkoutStarted(false);
     setWorkoutStartTime(null);
   }
@@ -118,10 +126,18 @@ function Dashboard() {
     if (!selectedRoutine || selectedRoutine.exercises.length === 0) {
       return;
     }
-
+    setSavedWorkout(null);
     setWorkoutStartTime(Date.now());
     setWorkoutStarted(true);
   }
+
+  function resumeWorkout() {
+    if (!savedWorkout) {
+      return;
+    }
+    setWorkoutStartTime(savedWorkout.startTime)
+    setWorkoutStarted(true)
+    }
 
   function removeCompletedWorkout(id) {
     const updatedCompletedWorkouts = completedWorkouts.filter(
@@ -227,15 +243,30 @@ function Dashboard() {
 
   return workoutStarted ? (
     <Workout
-      name={selectedRoutine.name}
+      name={savedWorkout ? savedWorkout.name : selectedRoutine.name}
       completedWorkouts={completedWorkouts}
-      routineExercises={selectedRoutine.exercises}
+      routineExercises={savedWorkout ? savedWorkout.exercises : selectedRoutine.exercises}
       onFinish={handleFinishWorkout}
       startTime={workoutStartTime}
+      savedWorkout={savedWorkout}
     />
   ) : (
     <div className="dashboard">
       <h2>Dashboard</h2>
+      
+      {savedWorkout && (
+        <div>
+          <p>Unfinished workout: {savedWorkout.name}</p>
+          <button
+           type="button"
+           onClick={resumeWorkout}
+           >
+            Resume Workout
+          </button>
+        </div>
+      )}
+
+
 
       <RoutineManager
         routines={routines}

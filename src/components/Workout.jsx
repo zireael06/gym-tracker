@@ -7,6 +7,7 @@ function Workout({
   completedWorkouts,
   onFinish,
   startTime,
+  savedWorkout,
 }) {
   const [newExerciseName, setNewExerciseName] = useState("");
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -29,15 +30,26 @@ function Workout({
     };
   }, [startTime]);
 
-  const [exercises, setExercises] = useState(
-    routineExercises.map((exercise) => {
-      return {
-        id: crypto.randomUUID(),
-        name: exercise.name,
-        sets: [],
-      };
-    })
+  const [exercises, setExercises] = useState(() =>
+    savedWorkout
+      ? savedWorkout.exercises
+      : routineExercises.map((exercise) => {
+        return {
+          id: crypto.randomUUID(),
+          name: exercise.name,
+          sets: [],
+        };
+      })
   );
+
+  useEffect(() => {
+    const activeWorkout = {
+      name,
+      startTime,
+      exercises,
+    };
+    localStorage.setItem("activeWorkout", JSON.stringify(activeWorkout));
+  }, [name, startTime, exercises]);
 
   function addExercise() {
     if (!newExerciseName.trim()) {
@@ -162,6 +174,7 @@ function Workout({
       exercises,
     };
 
+    localStorage.removeItem("activeWorkout");
     onFinish(completedWorkout);
   }
 
