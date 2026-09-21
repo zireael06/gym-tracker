@@ -152,6 +152,13 @@ function Dashboard() {
     localStorage.removeItem("activeWorkout")
     setSavedWorkout(null);
   }
+
+  function exitWorkout() {
+      const saved = localStorage.getItem("activeWorkout");
+      
+      setSavedWorkout(saved ? JSON.parse(saved) : null);
+      setWorkoutStarted(false);
+  }
   
 
   function removeCompletedWorkout(id) {
@@ -262,6 +269,7 @@ function Dashboard() {
       completedWorkouts={completedWorkouts}
       routineExercises={savedWorkout ? savedWorkout.exercises : selectedRoutine.exercises}
       onFinish={handleFinishWorkout}
+      onExit={exitWorkout}
       startTime={workoutStartTime}
       savedWorkout={savedWorkout}
     />

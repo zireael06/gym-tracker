@@ -8,6 +8,7 @@ function Workout({
   onFinish,
   startTime,
   savedWorkout,
+  onExit,
 }) {
   const [newExerciseName, setNewExerciseName] = useState("");
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -103,11 +104,11 @@ function Workout({
             ...exercise,
             sets: exercise.sets.map((set) => {
               return set.id === setId
-                ? {
-                    ...set,
-                    weight: newWeight,
-                  }
-                : set;
+              ? {
+                  ...set,
+                  weight: newWeight,
+                }
+              : set;
             }),
           }
         : exercise;
@@ -256,6 +257,13 @@ function Workout({
       {!hasSets && (
         <p>Add at least one set before finishing.</p>
       )}
+      
+      <button
+        type="button"
+        onClick={onExit}
+      >
+        Save & Exit Workout
+      </button>
 
       
     </div>
@@ -263,3 +271,4 @@ function Workout({
 }
 
 export default Workout;
+
