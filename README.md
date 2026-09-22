@@ -1,16 +1,37 @@
-# React + Vite
+# Gym Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React application for creating workout routines, recording sets, and reviewing workout history.
 
-Currently, two official plugins are available:
+I built this project to practise React state management, component design, form handling, array methods, local storage, validation, and responsive CSS.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Create, rename, select, and delete workout routines
+- Add and remove exercises from routines
+- Record workout sets with weight and reps
+- Track workout duration
+- Validate set inputs before completing a workout
+- Save, exit, resume, or discard an unfinished workout
+- View previous workout performance
+- Calculate exercise and total workout volume
+- Search completed workouts by name
+- Sort workout history by newest or oldest
+- Store routines and workout history in the browser
+- Responsive layout for desktop and mobile
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Built With
 
-## Expanding the ESLint configuration
+- React
+- JavaScript
+- Vite
+- CSS
+- Browser localStorage
+- ESLint
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started
+
+1. Clone the repository.
+2. Install the dependencies:
+
+   ```bash
+   npm install
