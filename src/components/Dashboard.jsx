@@ -162,6 +162,14 @@ function Dashboard() {
   
 
   function removeCompletedWorkout(id) {
+    const confirmed = window.confirm(
+      "Delete this completed workout?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+    
     const updatedCompletedWorkouts = completedWorkouts.filter(
       (workout) => {
         return workout.id !== id;
@@ -252,6 +260,12 @@ function Dashboard() {
   }
 
   function deleteRoutine(id) {
+    const confirmed = window.confirm(
+      "Delete this routine?"
+    );
+    if (!confirmed) {
+      return;
+    }
     const updatedRoutines = routines.filter((routine) => {
       return routine.id !== id;
     });
