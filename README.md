@@ -4,6 +4,10 @@ A responsive React application for creating workout routines, recording sets, an
 
 I built this project to practise React state management, component design, form handling, array methods, local storage, validation, and responsive CSS.
 
+## Live Demo
+
+[Open the live Gym Tracker](https://gym-tracker-omega-one.vercel.app/)
+
 ## Screenshots
 
 ### Dashboard
@@ -45,11 +49,22 @@ I built this project to practise React state management, component design, form 
 - CSS
 - Browser `localStorage`
 - ESLint
+- Vercel
 
 ## Getting Started
 
-1. Clone the repository.
-2. Open the project directory.
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/zireael06/gym-tracker.git
+   ```
+
+2. Open the project directory:
+
+   ```bash
+   cd gym-tracker
+   ```
+
 3. Install the dependencies:
 
    ```bash
@@ -92,9 +107,9 @@ npm run preview
 
 ## Data Storage
 
-The app currently stores routines, completed workouts, and unfinished workout progress in browser `localStorage`.
+The app stores routines, completed workouts, and unfinished workout progress in browser `localStorage`.
 
-The data remains in the current browser on the current device and is not synced to an online account.
+Data remains in the current browser on the current device and is not synced to an online account.
 
 ## Project Structure
 
@@ -138,6 +153,6 @@ The interface is divided into focused React components:
 
 ## Current Status
 
-The main workout-tracking flow is complete.
+The main workout-tracking flow is complete and the app is deployed on Vercel.
 
-I am currently improving reliability, automated testing, accessibility, documentation, and visual polish before the final deployment.
+I am continuing to improve reliability, automated testing, accessibility, and visual polish.
