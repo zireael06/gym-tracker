@@ -113,8 +113,8 @@ function Dashboard() {
   }, [routines]);
 
   function handleFinishWorkout(completedWorkout) {
-    setCompletedWorkouts([
-      ...completedWorkouts,
+    setCompletedWorkouts((currentWorkouts) => [
+      ...currentWorkouts,
       completedWorkout,
     ]);
     setSavedWorkout(null);
@@ -153,6 +153,8 @@ function Dashboard() {
     setSavedWorkout(null);
   }
 
+
+
   function exitWorkout() {
       const saved = localStorage.getItem("activeWorkout");
       
@@ -160,6 +162,7 @@ function Dashboard() {
       setWorkoutStarted(false);
   }
   
+
 
   function removeCompletedWorkout(id) {
     const confirmed = window.confirm(
@@ -179,13 +182,15 @@ function Dashboard() {
     setCompletedWorkouts(updatedCompletedWorkouts);
   }
 
+
+
   function addNewRoutineName(routineName) {
     if (!routineName) {
       return;
     }
 
-    setRoutines([
-      ...routines,
+    setRoutines((currentRoutines) => [
+      ...currentRoutines,
       {
         id: crypto.randomUUID(),
         name: routineName.trim(),

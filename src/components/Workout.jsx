@@ -52,13 +52,15 @@ function Workout({
     localStorage.setItem("activeWorkout", JSON.stringify(activeWorkout));
   }, [name, startTime, exercises]);
 
+
+
   function addExercise() {
     if (!newExerciseName.trim()) {
       return;
     }
 
-    setExercises([
-      ...exercises,
+    setExercises((currentExercises)=> [
+      ...currentExercises,
       {
         id: crypto.randomUUID(),
         name: newExerciseName.trim(),
@@ -68,6 +70,8 @@ function Workout({
 
     setNewExerciseName("");
   }
+
+
 
   function removeExercise(id) {
     const updatedExercises = exercises.filter((exercise) => {
