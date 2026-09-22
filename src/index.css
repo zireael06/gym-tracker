@@ -134,6 +134,7 @@ code {
 
 
 .dashboard input,
+.dashboard select,
 .workout input {
   width: 100%;
   box-sizing: border-box;
@@ -277,4 +278,9 @@ code {
 .workout .set-row input[aria-invalid="true"] {
   border-color: #ef4444;
   outline: 1px solid #ef4444;
+}
+
+.workout-sort-label {
+  display: block;
+  margin: 12px 0 6px;
 }

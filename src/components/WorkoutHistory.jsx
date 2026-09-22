@@ -6,12 +6,25 @@ function WorkoutHistory({
 }) {
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [workoutSearch, setWorkoutSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest");
 
   const filteredWorkouts = completedWorkouts.filter((workout) => {
     return workout.name
       .toLowerCase()
       .includes(workoutSearch.toLowerCase().trim());
   });
+
+  const sortedWorkouts = [...filteredWorkouts].sort(
+    (firstWorkout, secondWorkout) => {
+      const firstDate = new Date(firstWorkout.date).getTime();
+      const secondDate = new Date(secondWorkout.date).getTime();
+
+      if (sortOrder === "newest") {
+        return secondDate - firstDate;
+      }
+      return firstDate - secondDate;
+    }
+  );
 
   function formatDuration(duration) {
     const minutes = Math.floor(duration / 60);
@@ -85,6 +98,23 @@ function WorkoutHistory({
         Clear Search
       </button>
 
+
+      <label
+        className="workout-sort-label"
+        htmlFor="workout-sort"
+      >
+        Sort workouts
+      </label>
+      
+      <select
+        id="workout-sort"
+        value={sortOrder}
+        onChange={(event) => setSortOrder(event.target.value)}
+      >
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+      </select>
+
       <p>Showing {filteredWorkouts.length} of {completedWorkouts.length} workouts</p>
 
       {completedWorkouts.length === 0 ? (
@@ -92,7 +122,7 @@ function WorkoutHistory({
       ) : filteredWorkouts.length === 0 ? (
         <p>No matching workouts found.</p>
       ) : (
-        filteredWorkouts.map((workout) => {
+        sortedWorkouts.map((workout) => {
           const totalSets = workout.exercises.reduce(
             (total, exercise) => {
               return total + exercise.sets.length;
