@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import WorkoutHistory from "../components/WorkoutHistory";
 import userEvent from "@testing-library/user-event";
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 
 const sampleWorkouts = [
   {
@@ -170,4 +170,26 @@ test("shows the oldest workout first when oldest is selected", async () => {
 
   expect(workoutHeadings[0]).toHaveTextContent("Leg Day");
   expect(workoutHeadings[1]).toHaveTextContent("Upper Body");
+});
+
+
+test("calls onDeleteWorkout with the correct workout ID", async () => {
+  const user = userEvent.setup();
+  const onDeleteWorkout = vi.fn();
+
+  render(
+    <WorkoutHistory
+      completedWorkouts={sampleWorkouts}
+      onDeleteWorkout={onDeleteWorkout}
+    />
+  );
+
+  const deleteButtons = screen.getAllByRole("button", {
+    name: "Delete Workout",
+  });
+
+  await user.click(deleteButtons[0]);
+
+  expect(onDeleteWorkout).toHaveBeenCalledTimes(1);
+  expect(onDeleteWorkout).toHaveBeenCalledWith("workout-2");
 });
