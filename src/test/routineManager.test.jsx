@@ -7,7 +7,12 @@ const sampleRoutines = [
   {
     id: "routine-1",
     name: "Push Day",
-    exercises: [],
+    exercises: [
+      {
+        id: "exercise-1",
+        name: "Bench Press",
+      },
+    ],
   },
   {
     id: "routine-2",
@@ -180,4 +185,58 @@ test("submits a trimmed exercise name and clears the input", async () => {
 
   expect(onAddExercise).toHaveBeenCalledWith("Bench Press");
   expect(exerciseInput).toHaveValue("");
+});
+
+
+
+test("calls onRemoveExercise with the correct exercise ID", async () => {
+  const user = userEvent.setup();
+  const onRemoveExercise = vi.fn();
+
+  render(
+    <RoutineManager
+      routines={sampleRoutines}
+      selectedRoutine={sampleRoutines[0]}
+      onSelectRoutine={vi.fn()}
+      onAddRoutine={vi.fn()}
+      onRenameRoutine={vi.fn()}
+      onAddExercise={vi.fn()}
+      onRemoveExercise={onRemoveExercise}
+      onDeleteRoutine={vi.fn()}
+    />
+  );
+
+  await user.click(
+    screen.getByRole("button", { name: "Remove" })
+  );
+
+  expect(onRemoveExercise).toHaveBeenCalledWith("exercise-1");
+});
+
+
+
+test("calls onDeleteRoutine with the correct routine ID", async () => {
+  const user = userEvent.setup();
+  const onDeleteRoutine = vi.fn();
+
+  render(
+    <RoutineManager
+      routines={sampleRoutines}
+      selectedRoutine={null}
+      onSelectRoutine={vi.fn()}
+      onAddRoutine={vi.fn()}
+      onRenameRoutine={vi.fn()}
+      onAddExercise={vi.fn()}
+      onRemoveExercise={vi.fn()}
+      onDeleteRoutine={onDeleteRoutine}
+    />
+  );
+
+  const deleteButtons = screen.getAllByRole("button", {
+    name: "Delete",
+  });
+
+  await user.click(deleteButtons[1]);
+
+  expect(onDeleteRoutine).toHaveBeenCalledWith("routine-2");
 });
