@@ -1,5 +1,7 @@
 # Gym Tracker
 
+[![CI](https://github.com/zireael06/gym-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/zireael06/gym-tracker/actions/workflows/ci.yml)
+
 A responsive React application for creating workout routines, recording sets, and reviewing workout history.
 
 I built this project to practise React state management, component design, form handling, array methods, local storage, validation, and responsive CSS.
