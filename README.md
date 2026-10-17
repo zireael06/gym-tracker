@@ -4,7 +4,7 @@
 
 A responsive React application for creating workout routines, recording sets, and reviewing workout history.
 
-I built this project to practise React state management, component design, form handling, array methods, local storage, validation, and responsive CSS.
+I built this project to practise React state management, component design, form handling, array methods, browser storage, validation, automated testing, and responsive CSS.
 
 ## Live Demo
 
@@ -40,7 +40,7 @@ I built this project to practise React state management, component design, form 
 - Calculate exercise and total workout volume
 - Search completed workouts by name
 - Sort workout history by newest or oldest
-- Store routines and workout history in the browser
+- Store routines, completed workouts, and unfinished progress in the browser
 - Responsive layout for desktop and mobile
 
 ## Built With
@@ -50,7 +50,10 @@ I built this project to practise React state management, component design, form 
 - Vite
 - CSS
 - Browser `localStorage`
+- Vitest
+- React Testing Library
 - ESLint
+- GitHub Actions
 - Vercel
 
 ## Getting Started
@@ -101,11 +104,39 @@ Check the project with ESLint:
 npm run lint
 ```
 
+Run tests in watch mode:
+
+```bash
+npm test
+```
+
+Run the complete test suite once:
+
+```bash
+npm run test:run
+```
+
 Preview the production build:
 
 ```bash
 npm run preview
 ```
+
+## Testing
+
+The project includes 28 automated tests across five test files using Vitest and React Testing Library.
+
+The tests cover:
+
+- Routine selection, creation, renaming, and deletion callbacks
+- Exercise creation and removal
+- Set weight and rep updates
+- Previous-best and progressive-overload calculations
+- Workout validation and completion
+- Workout-history searching, sorting, and deletion
+- Dashboard state transitions and starting a selected workout
+
+GitHub Actions runs ESLint, the complete test suite, and a production build whenever code is pushed to `main` or included in a pull request targeting `main`.
 
 ## Data Storage
 
@@ -117,6 +148,9 @@ Data remains in the current browser on the current device and is not synced to a
 
 ```text
 gym-tracker/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── public/
 │   └── favicon.svg
 ├── screenshots/
@@ -134,6 +168,13 @@ gym-tracker/
 │   │   ├── RoutineManager.jsx
 │   │   ├── Workout.jsx
 │   │   └── WorkoutHistory.jsx
+│   ├── test/
+│   │   ├── dashboard.test.jsx
+│   │   ├── exercise.test.jsx
+│   │   ├── routineManager.test.jsx
+│   │   ├── setup.js
+│   │   ├── workout.test.jsx
+│   │   └── workoutHistory.test.jsx
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
@@ -155,6 +196,6 @@ The interface is divided into focused React components:
 
 ## Current Status
 
-The main workout-tracking flow is complete and the app is deployed on Vercel.
+The main workout-tracking flow is complete, tested, documented, and deployed on Vercel.
 
-I am continuing to improve reliability, automated testing, accessibility, and visual polish.
+The project includes automated component and integration tests, with GitHub Actions checking linting, tests, and the production build on every push to `main`.
