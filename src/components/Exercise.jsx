@@ -1,3 +1,5 @@
+import calculateProgressionTarget from "../utils/calculateProgressionTarget";
+
 function Exercise({
   name,
   id,
@@ -29,16 +31,8 @@ function Exercise({
         )
       : null;
 
-  const targetWeight = bestSet
-    ? bestSet.reps < 12
-      ? bestSet.weight
-      : bestSet.weight + 2.5
-    : null;
-
-  const targetReps = bestSet
-    ? bestSet.reps < 12
-      ? bestSet.reps + 1
-      : 8
+  const progressionTarget = bestSet
+    ? calculateProgressionTarget(bestSet)
     : null;
 
   return (
@@ -65,7 +59,8 @@ function Exercise({
           </p>
 
           <p>
-            Target: {targetWeight}kg × {targetReps} reps
+            Target: {progressionTarget.weight}kg ×{" "}
+            {progressionTarget.reps} reps
           </p>
         </div>
       )}
