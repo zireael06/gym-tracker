@@ -1,4 +1,5 @@
 import calculateProgressionTarget from "../utils/calculateProgressionTarget";
+import findBestSet from "../utils/findBestSet";
 
 function Exercise({
   name,
@@ -10,26 +11,9 @@ function Exercise({
   onUpdateReps,
   onRemoveSet,
   previousExercise,
-}) {
-  const bestSet =
-    previousExercise?.sets.length > 0
-      ? previousExercise.sets.reduce(
-          (bestSet, currentSet) => {
-            if (currentSet.weight > bestSet.weight) {
-              return currentSet;
-            }
+})
 
-            if (
-              currentSet.weight === bestSet.weight &&
-              currentSet.reps > bestSet.reps
-            ) {
-              return currentSet;
-            }
-
-            return bestSet;
-          }
-        )
-      : null;
+  {const bestSet = findBestSet(previousExercise?.sets ?? []);
 
   const progressionTarget = bestSet
     ? calculateProgressionTarget(bestSet)
