@@ -19,10 +19,7 @@ const sampleRoutines = [
 beforeEach(() => {
   localStorage.clear();
 
-  localStorage.setItem(
-    "routines",
-    JSON.stringify(sampleRoutines)
-  );
+  localStorage.setItem("routines", JSON.stringify(sampleRoutines));
 });
 
 test("enables starting a workout after selecting a routine", async () => {
@@ -36,42 +33,47 @@ test("enables starting a workout after selecting a routine", async () => {
 
   expect(startButton).toBeDisabled();
 
-  await user.click(
-    screen.getByRole("button", { name: "Push Day" })
-  );
+  await user.click(screen.getByRole("button", { name: "Push Day" }));
 
   expect(startButton).toBeEnabled();
 });
-
 
 test("starts the selected workout", async () => {
   const user = userEvent.setup();
 
   render(<Dashboard />);
 
-  await user.click(
-    screen.getByRole("button", { name: "Push Day" })
-  );
+  await user.click(screen.getByRole("button", { name: "Push Day" }));
 
-  await user.click(
-    screen.getByRole("button", { name: "Start Workout" })
-  );
+  await user.click(screen.getByRole("button", { name: "Start Workout" }));
 
   expect(
     screen.getByRole("heading", {
       name: "Current Workout",
-    })
+    }),
   ).toBeInTheDocument();
 
   expect(
     screen.getByRole("heading", {
       name: "Push Day",
-    })
+    }),
   ).toBeInTheDocument();
 
   expect(
     screen.queryByRole("heading", {
       name: "Dashboard",
-    })
+    }),
   ).not.toBeInTheDocument();
+});
+
+test("falls back to default routines when stored data is invalid", () => {
+  localStorage.setItem("routines", "not valid JSON");
+
+  render(<Dashboard />);
+
+  expect(
+    screen.getByRole("button", {
+      name: "Legs",
+    }),
+  ).toBeInTheDocument();
 });
