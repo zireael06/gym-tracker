@@ -2,99 +2,90 @@ import Workout from "./Workout";
 import WorkoutHistory from "./WorkoutHistory";
 import RoutineManager from "./RoutineManager";
 import { useEffect, useState } from "react";
+import readStoredValue from "../utils/readStoredValue";
 
 function Dashboard() {
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState(null);
   const [selectedRoutineId, setSelectedRoutineId] = useState(null);
-  
-  const [savedWorkout, setSavedWorkout] = useState(() => {
-    const saved = localStorage.getItem("activeWorkout");
-    return saved ? JSON.parse(saved) : null;
-  });
 
+  const [savedWorkout, setSavedWorkout] = useState(() =>
+    readStoredValue("activeWorkout", null),
+  );
 
-  const [completedWorkouts, setCompletedWorkouts] = useState(() => {
-    const savedWorkouts = localStorage.getItem("completedWorkouts");
-
-    return savedWorkouts ? JSON.parse(savedWorkouts) : [];
-  });
-
+  const [completedWorkouts, setCompletedWorkouts] = useState(() =>
+    readStoredValue("completedWorkouts", []),
+  );
 
   const [routines, setRoutines] = useState(() => {
-    const savedRoutines = localStorage.getItem("routines");
-
-
-    return savedRoutines
-      ? JSON.parse(savedRoutines)
-      : [
+    return readStoredValue("routines", [
+      {
+        id: 1,
+        name: "Chest & Back",
+        exercises: [
           {
-            id: 1,
-            name: "Chest & Back",
-            exercises: [
-              {
-                id: crypto.randomUUID(),
-                name: "Incline Bench Press",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Incline Dumbbell Row",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Pec Deck",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Lat Pulldown",
-              },
-            ],
+            id: crypto.randomUUID(),
+            name: "Incline Bench Press",
           },
           {
-            id: 2,
-            name: "Legs",
-            exercises: [
-              {
-                id: crypto.randomUUID(),
-                name: "Barbell Back Squat",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Seated Leg Curl",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Seated Leg Extension",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Romanian Deadlift",
-              },
-            ],
+            id: crypto.randomUUID(),
+            name: "Incline Dumbbell Row",
           },
           {
-            id: 3,
-            name: "Arms",
-            exercises: [
-              {
-                id: crypto.randomUUID(),
-                name: "EZ Bar Curls",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Tricep Pulldowns",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Preacher Curls",
-              },
-              {
-                id: crypto.randomUUID(),
-                name: "Overhead Tricep Extensions",
-              },
-            ],
+            id: crypto.randomUUID(),
+            name: "Pec Deck",
           },
-        ];
+          {
+            id: crypto.randomUUID(),
+            name: "Lat Pulldown",
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "Legs",
+        exercises: [
+          {
+            id: crypto.randomUUID(),
+            name: "Barbell Back Squat",
+          },
+          {
+            id: crypto.randomUUID(),
+            name: "Seated Leg Curl",
+          },
+          {
+            id: crypto.randomUUID(),
+            name: "Seated Leg Extension",
+          },
+          {
+            id: crypto.randomUUID(),
+            name: "Romanian Deadlift",
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: "Arms",
+        exercises: [
+          {
+            id: crypto.randomUUID(),
+            name: "EZ Bar Curls",
+          },
+          {
+            id: crypto.randomUUID(),
+            name: "Tricep Pulldowns",
+          },
+          {
+            id: crypto.randomUUID(),
+            name: "Preacher Curls",
+          },
+          {
+            id: crypto.randomUUID(),
+            name: "Overhead Tricep Extensions",
+          },
+        ],
+      },
+    ]);
   });
 
   const selectedRoutine = routines.find((routine) => {
@@ -104,7 +95,7 @@ function Dashboard() {
   useEffect(() => {
     localStorage.setItem(
       "completedWorkouts",
-      JSON.stringify(completedWorkouts)
+      JSON.stringify(completedWorkouts),
     );
   }, [completedWorkouts]);
 
@@ -123,7 +114,11 @@ function Dashboard() {
   }
 
   function startWorkout() {
-    if (savedWorkout || !selectedRoutine || selectedRoutine.exercises.length === 0) {
+    if (
+      savedWorkout ||
+      !selectedRoutine ||
+      selectedRoutine.exercises.length === 0
+    ) {
       return;
     }
     setSavedWorkout(null);
@@ -131,58 +126,45 @@ function Dashboard() {
     setWorkoutStarted(true);
   }
 
-
   function resumeWorkout() {
     if (!savedWorkout) {
       return;
     }
-    setWorkoutStartTime(savedWorkout.startTime)
-    setWorkoutStarted(true)
-    }
+    setWorkoutStartTime(savedWorkout.startTime);
+    setWorkoutStarted(true);
+  }
 
   function discardWorkout() {
     const confirmed = window.confirm(
-      "Discard this unfinished workout? Its sets will be lost."
+      "Discard this unfinished workout? Its sets will be lost.",
     );
-    
+
     if (!confirmed) {
       return;
     }
 
-    localStorage.removeItem("activeWorkout")
+    localStorage.removeItem("activeWorkout");
     setSavedWorkout(null);
   }
 
-
-
   function exitWorkout() {
-      const saved = localStorage.getItem("activeWorkout");
-      
-      setSavedWorkout(saved ? JSON.parse(saved) : null);
-      setWorkoutStarted(false);
+    setSavedWorkout(readStoredValue("activeWorkout", null));
+    setWorkoutStarted(false);
   }
-  
-
 
   function removeCompletedWorkout(id) {
-    const confirmed = window.confirm(
-      "Delete this completed workout?"
-    );
+    const confirmed = window.confirm("Delete this completed workout?");
 
     if (!confirmed) {
       return;
     }
-    
-    const updatedCompletedWorkouts = completedWorkouts.filter(
-      (workout) => {
-        return workout.id !== id;
-      }
-    );
+
+    const updatedCompletedWorkouts = completedWorkouts.filter((workout) => {
+      return workout.id !== id;
+    });
 
     setCompletedWorkouts(updatedCompletedWorkouts);
   }
-
-
 
   function addNewRoutineName(routineName) {
     if (!routineName) {
@@ -265,9 +247,7 @@ function Dashboard() {
   }
 
   function deleteRoutine(id) {
-    const confirmed = window.confirm(
-      "Delete this routine?"
-    );
+    const confirmed = window.confirm("Delete this routine?");
     if (!confirmed) {
       return;
     }
@@ -286,7 +266,9 @@ function Dashboard() {
     <Workout
       name={savedWorkout ? savedWorkout.name : selectedRoutine.name}
       completedWorkouts={completedWorkouts}
-      routineExercises={savedWorkout ? savedWorkout.exercises : selectedRoutine.exercises}
+      routineExercises={
+        savedWorkout ? savedWorkout.exercises : selectedRoutine.exercises
+      }
       onFinish={handleFinishWorkout}
       onExit={exitWorkout}
       startTime={workoutStartTime}
@@ -295,27 +277,22 @@ function Dashboard() {
   ) : (
     <div className="dashboard">
       <h2>Dashboard</h2>
-      
+
       {savedWorkout && (
         <div>
           <p>Unfinished workout: {savedWorkout.name}</p>
-          <button
-           type="button"
-           onClick={resumeWorkout}
-           >
+          <button type="button" onClick={resumeWorkout}>
             Resume Workout
           </button>
           <button
-           type="button"
-           className="delete-button"
-           onClick={discardWorkout}
-           >
+            type="button"
+            className="delete-button"
+            onClick={discardWorkout}
+          >
             Discard Workout
           </button>
         </div>
       )}
-
-
 
       <RoutineManager
         routines={routines}
@@ -331,7 +308,11 @@ function Dashboard() {
       <button
         type="button"
         onClick={startWorkout}
-        disabled={savedWorkout || !selectedRoutine || selectedRoutine.exercises.length === 0}
+        disabled={
+          savedWorkout ||
+          !selectedRoutine ||
+          selectedRoutine.exercises.length === 0
+        }
       >
         Start Workout
       </button>
@@ -344,7 +325,6 @@ function Dashboard() {
         completedWorkouts={completedWorkouts}
         onDeleteWorkout={removeCompletedWorkout}
       />
-
     </div>
   );
 }
