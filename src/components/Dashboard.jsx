@@ -4,88 +4,103 @@ import RoutineManager from "./RoutineManager";
 import { useEffect, useState } from "react";
 import readStoredValue from "../utils/readStoredValue";
 
+function isValidActiveWorkout(value) {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    typeof value.name === "string" &&
+    typeof value.startTime === "number" &&
+    Array.isArray(value.exercises)
+  );
+}
+
 function Dashboard() {
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState(null);
   const [selectedRoutineId, setSelectedRoutineId] = useState(null);
 
   const [savedWorkout, setSavedWorkout] = useState(() =>
-    readStoredValue("activeWorkout", null),
+    readStoredValue("activeWorkout", null, isValidActiveWorkout),
   );
 
   const [completedWorkouts, setCompletedWorkouts] = useState(() =>
-    readStoredValue("completedWorkouts", []),
+    readStoredValue("completedWorkouts", [], Array.isArray),
   );
 
   const [routines, setRoutines] = useState(() => {
-    return readStoredValue("routines", [
-      {
-        id: 1,
-        name: "Chest & Back",
-        exercises: [
-          {
-            id: crypto.randomUUID(),
-            name: "Incline Bench Press",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Incline Dumbbell Row",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Pec Deck",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Lat Pulldown",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Legs",
-        exercises: [
-          {
-            id: crypto.randomUUID(),
-            name: "Barbell Back Squat",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Seated Leg Curl",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Seated Leg Extension",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Romanian Deadlift",
-          },
-        ],
-      },
-      {
-        id: 3,
-        name: "Arms",
-        exercises: [
-          {
-            id: crypto.randomUUID(),
-            name: "EZ Bar Curls",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Tricep Pulldowns",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Preacher Curls",
-          },
-          {
-            id: crypto.randomUUID(),
-            name: "Overhead Tricep Extensions",
-          },
-        ],
-      },
-    ]);
+    return readStoredValue(
+      "routines",
+      [
+        {
+          id: 1,
+          name: "Chest & Back",
+          exercises: [
+            {
+              id: crypto.randomUUID(),
+              name: "Incline Bench Press",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Incline Dumbbell Row",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Pec Deck",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Lat Pulldown",
+            },
+          ],
+        },
+        {
+          id: 2,
+          name: "Legs",
+          exercises: [
+            {
+              id: crypto.randomUUID(),
+              name: "Barbell Back Squat",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Seated Leg Curl",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Seated Leg Extension",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Romanian Deadlift",
+            },
+          ],
+        },
+        {
+          id: 3,
+          name: "Arms",
+          exercises: [
+            {
+              id: crypto.randomUUID(),
+              name: "EZ Bar Curls",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Tricep Pulldowns",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Preacher Curls",
+            },
+            {
+              id: crypto.randomUUID(),
+              name: "Overhead Tricep Extensions",
+            },
+          ],
+        },
+      ],
+      Array.isArray,
+    );
   });
 
   const selectedRoutine = routines.find((routine) => {
@@ -148,7 +163,9 @@ function Dashboard() {
   }
 
   function exitWorkout() {
-    setSavedWorkout(readStoredValue("activeWorkout", null));
+    setSavedWorkout(
+      readStoredValue("activeWorkout", null, isValidActiveWorkout),
+    );
     setWorkoutStarted(false);
   }
 

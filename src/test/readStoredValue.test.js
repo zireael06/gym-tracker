@@ -26,3 +26,11 @@ test("returns the fallback when stored JSON is invalid", () => {
 
   expect(result).toBeNull();
 });
+
+test("returns the fallback when parsed data fails validation", () => {
+  localStorage.setItem("routines", JSON.stringify("hello"));
+
+  const result = readStoredValue("routines", [], Array.isArray);
+
+  expect(result).toEqual([]);
+});
