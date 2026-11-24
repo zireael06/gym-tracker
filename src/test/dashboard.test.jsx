@@ -77,3 +77,23 @@ test("falls back to default routines when stored data is invalid", () => {
     }),
   ).toBeInTheDocument();
 });
+
+test("falls back to default routines when stored routines are not an array", () => {
+  localStorage.setItem("routines", JSON.stringify("hello"));
+
+  render(<Dashboard />);
+
+  expect(
+    screen.getByRole("button", {
+      name: "Legs",
+    }),
+  ).toBeInTheDocument();
+});
+
+test("ignores a stored active workout with the wrong data shape", () => {
+  localStorage.setItem("activeWorkout", JSON.stringify("hello"));
+
+  render(<Dashboard />);
+
+  expect(screen.queryByText(/unfinished workout:/i)).not.toBeInTheDocument();
+});

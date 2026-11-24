@@ -1,4 +1,4 @@
-function readStoredValue(key, fallbackValue) {
+function readStoredValue(key, fallbackValue, isValid = () => true) {
   const storedValue = localStorage.getItem(key);
 
   if (storedValue === null) {
@@ -6,7 +6,9 @@ function readStoredValue(key, fallbackValue) {
   }
 
   try {
-    return JSON.parse(storedValue);
+    const parsedValue = JSON.parse(storedValue);
+
+    return isValid(parsedValue) ? parsedValue : fallbackValue;
   } catch {
     return fallbackValue;
   }
