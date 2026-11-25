@@ -97,3 +97,35 @@ test("ignores a stored active workout with the wrong data shape", () => {
 
   expect(screen.queryByText(/unfinished workout:/i)).not.toBeInTheDocument();
 });
+
+test("falls back when a stored routines array contains invalid items", () => {
+  localStorage.setItem("routines", JSON.stringify(["hello"]));
+
+  render(<Dashboard />);
+
+  expect(
+    screen.getByRole("button", {
+      name: "Legs",
+    }),
+  ).toBeInTheDocument();
+});
+
+const routinesWithInvalidExercise = [
+  {
+    id: "routine-1",
+    name: "Push Day",
+    exercises: ["Bench Press"],
+  },
+];
+
+test("falls back when a routine contains invalid exercises", () => {
+  localStorage.setItem("routines", JSON.stringify(routinesWithInvalidExercise));
+
+  render(<Dashboard />);
+
+  expect(
+    screen.getByRole("button", {
+      name: "Legs",
+    }),
+  ).toBeInTheDocument();
+});
