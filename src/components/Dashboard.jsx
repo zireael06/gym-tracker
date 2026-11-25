@@ -15,6 +15,39 @@ function isValidActiveWorkout(value) {
   );
 }
 
+function isValidId(value) {
+  return typeof value === "string" || typeof value === "number";
+}
+
+function isValidRoutineExercise(value) {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    isValidId(value.id) &&
+    typeof value.name === "string"
+  );
+}
+
+function isValidRoutine(value) {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    isValidId(value.id) &&
+    typeof value.name === "string" &&
+    Array.isArray(value.exercises) &&
+    value.exercises.every(isValidRoutineExercise)
+  );
+}
+
+function isValidRoutines(value) {
+  return (
+    Array.isArray(value) &&
+    value.every(isValidRoutine)
+  );
+}
+
 function Dashboard() {
   const [workoutStarted, setWorkoutStarted] = useState(false);
   const [workoutStartTime, setWorkoutStartTime] = useState(null);
@@ -99,7 +132,7 @@ function Dashboard() {
           ],
         },
       ],
-      Array.isArray,
+      isValidRoutines,
     );
   });
 
