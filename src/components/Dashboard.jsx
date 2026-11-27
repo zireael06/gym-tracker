@@ -42,10 +42,52 @@ function isValidRoutine(value) {
 }
 
 function isValidRoutines(value) {
+  return Array.isArray(value) && value.every(isValidRoutine);
+}
+
+function isValidCompletedSet(value) {
   return (
-    Array.isArray(value) &&
-    value.every(isValidRoutine)
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    isValidId(value.id) &&
+    typeof value.weight === "number" &&
+    Number.isFinite(value.weight) &&
+    value.weight >= 0 &&
+    Number.isInteger(value.reps) &&
+    value.reps >= 1
   );
+}
+
+function isValidCompletedExercise(value) {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    isValidId(value.id) &&
+    typeof value.name === "string" &&
+    Array.isArray(value.sets) &&
+    value.sets.every(isValidCompletedSet)
+  );
+}
+
+function isValidCompletedWorkout(value) {
+  return (
+    value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    isValidId(value.id) &&
+    typeof value.name === "string" &&
+    typeof value.date === "string" &&
+    Number.isFinite(value.duration) &&
+    value.duration >= 0 &&
+    Array.isArray(value.exercises) &&
+    value.exercises.every(isValidCompletedExercise)
+  );
+}
+
+function isValidCompletedWorkouts(value) {
+  return Array.isArray(value) && value.every(isValidCompletedWorkout);
 }
 
 function Dashboard() {
@@ -58,7 +100,7 @@ function Dashboard() {
   );
 
   const [completedWorkouts, setCompletedWorkouts] = useState(() =>
-    readStoredValue("completedWorkouts", [], Array.isArray),
+    readStoredValue("completedWorkouts", [], isValidCompletedWorkouts),
   );
 
   const [routines, setRoutines] = useState(() => {

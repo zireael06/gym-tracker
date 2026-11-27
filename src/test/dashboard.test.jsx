@@ -129,3 +129,73 @@ test("falls back when a routine contains invalid exercises", () => {
     }),
   ).toBeInTheDocument();
 });
+
+const completedWorkoutsWithInvalidSet = [
+  {
+    id: "workout-1",
+    name: "Push Day",
+    date: "2026-11-27T10:00:00.000Z",
+    duration: 600,
+    exercises: [
+      {
+        id: "exercise-1",
+        name: "Bench Press",
+        sets: [
+          {
+            id: "set-1",
+            weight: 80,
+            reps: "",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+test("falls back when a completed workout contains an invalid set", () => {
+  localStorage.setItem(
+    "completedWorkouts",
+    JSON.stringify(completedWorkoutsWithInvalidSet),
+  );
+
+  render(<Dashboard />);
+
+  expect(screen.getByText("No workouts completed yet.")).toBeInTheDocument();
+});
+
+test("loads valid completed workouts from storage", () => {
+  const validCompletedWorkouts = [
+    {
+      id: "workout-1",
+      name: "Push Day",
+      date: "2026-11-27T10:00:00.000Z",
+      duration: 600,
+      exercises: [
+        {
+          id: "exercise-1",
+          name: "Bench Press",
+          sets: [
+            {
+              id: "set-1",
+              weight: 80,
+              reps: 10,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  localStorage.setItem(
+    "completedWorkouts",
+    JSON.stringify(validCompletedWorkouts),
+  );
+
+  render(<Dashboard />);
+
+  expect(
+    screen.getByRole("heading", {
+      name: "Push Day",
+    }),
+  ).toBeInTheDocument();
+});
